@@ -1,0 +1,36 @@
+{
+  "name": "jupiter-core-example",
+  "version": "1.0.0",
+  "description": "",
+  "source": "src/index.ts",
+  "main": "dist/main.js",
+  "module": "dist/module.js",
+  "types": "dist/types.d.ts",
+  "scripts": {
+    "watch": "parcel watch",
+    "build": "parcel build",
+    "start": "npm run watch & nodemon --watch ./dist --exec 'node ./dist/main.js' --delay 1000ms"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@jup-ag/core": "^0.0.0-alpha.20",
+    "@solana/wallet-adapter-base": "^0.7.1",
+    "@solana/web3.js": "^1.31.0",
+    "@types/bs58": "^4.0.1",
+    "@types/isomorphic-fetch": "^0.0.35",
+    "bs58": "^4.0.1",
+    "dotenv": "^10.0.0",
+    "isomorphic-fetch": "^3.0.0",
+    "node-fetch": "^3.1.0",
+    "ts-node": "^10.4.0"
+  },
+  "devDependencies": {
+    "@parcel/packager-ts": "^2.0.1",
+    "@parcel/transformer-typescript-types": "^2.0.1",
+    "nodemon": "^2.0.15",
+    "parcel": "^2.0.1",
+    "typescript": "^4.5.3"
+  }
+}
