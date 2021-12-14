@@ -9,12 +9,8 @@
 <br/>
 This repo is an Example with our Jupiter Core SDK.
 
-<hr/>
-
 ## Integrate with React instead?
 The quickest way to integrate Jupiter with your UI, use [Jupiter React Hook instead](https://www.npmjs.com/package/@jup-ag/react-hook)
-
-<hr/>
 
 ## Getting started
 - Add a `.env` to root
