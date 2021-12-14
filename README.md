@@ -11,6 +11,8 @@ This repo is an Example with our Jupiter Core SDK.
 
 ## Integrate with React instead?
 The quickest way to integrate Jupiter with your UI, use [Jupiter React Hook instead](https://www.npmjs.com/package/@jup-ag/react-hook)
+## React Native?
+Checkout [Jupiter React Native Example](https://github.com/mercurial-finance/jupiter-react-native)
 
 ## Getting started
 - Add a `.env` to root
