@@ -57,7 +57,7 @@ const getRoutes = async ({
 }) => {
   try {
     if (!inputToken || !outputToken) {
-      return [];
+      return null;
     }
 
     console.log("Getting routes");
@@ -70,12 +70,18 @@ const getRoutes = async ({
           new PublicKey(inputToken.address),
           new PublicKey(outputToken.address),
           inputAmountLamports,
-          slippage
-        )) || []
-        : [];
-    console.log("Possible number of routes:", routes.length);
-    console.log("Best quote: ", routes[0].outAmount);
-    return routes;
+          slippage,
+          true
+        ))
+        : null;
+
+    if (routes && routes.routesInfos) {
+      console.log("Possible number of routes:", routes.routesInfos.length);
+      console.log("Best quote: ", routes.routesInfos[0].outAmount);
+      return routes;
+    } else {
+      return null;
+    }
   } catch (error) {
     throw error;
   }
@@ -116,7 +122,7 @@ const main = async () => {
   try {
     const connection = new Connection(SOLANA_RPC_ENDPOINT); // Setup Solana RPC connection
     const tokens: Token[] = await (await fetch(TOKEN_LIST_URL[ENV])).json(); // Fetch token list from Jupiter API
-    
+
     //  Load Jupiter
     const jupiter = await Jupiter.load({
       connection,
