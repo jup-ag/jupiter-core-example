@@ -152,7 +152,7 @@ const main = async () => {
     });
 
     // Routes are sorted based on outputAmount, so ideally the first route is the best.
-    // await executeSwap({ jupiter, route: routes[0] });
+    // await executeSwap({ jupiter, route: routes.routesInfos[0] });
   } catch (error) {
     console.log({ error });
   }
