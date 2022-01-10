@@ -15,11 +15,12 @@ The quickest way to integrate Jupiter with your UI, use [Jupiter React Hook inst
 Checkout [Jupiter React Native Example](https://github.com/mercurial-finance/jupiter-react-native)
 
 ## Getting started
+- We recommend `yarn` due to `resolutions`
 - Add a `.env` to root
 - Populate these value
 ```
 cluster=devnet
 WALLET_PRIVATE_KEY=<wallet private key> ## or set it up in src/constants
 ```
-- npm i
-- npm start
+- yarn
+- yarn start
