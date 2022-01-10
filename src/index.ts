@@ -61,7 +61,7 @@ const getRoutes = async ({
     }
 
     console.log("Getting routes");
-    const inputAmountTokens = inputToken
+    const inputAmountInSmallestUnits = inputToken
       ? Math.round(inputAmount * 10 ** inputToken.decimals)
       : 0;
     const routes =
@@ -69,7 +69,7 @@ const getRoutes = async ({
         ? (await jupiter.computeRoutes(
           new PublicKey(inputToken.address),
           new PublicKey(outputToken.address),
-          inputAmountTokens, // raw input amount of tokens
+          inputAmountInSmallestUnits, // raw input amount of tokens
           slippage,
           true
         ))
