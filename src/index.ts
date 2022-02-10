@@ -60,24 +60,30 @@ const getRoutes = async ({
       return null;
     }
 
-    console.log("Getting routes");
+    console.log(
+      `Getting routes for ${inputAmount} ${inputToken.symbol} -> ${outputToken.symbol}...`
+    );
     const inputAmountInSmallestUnits = inputToken
       ? Math.round(inputAmount * 10 ** inputToken.decimals)
       : 0;
     const routes =
       inputToken && outputToken
-        ? (await jupiter.computeRoutes(
-          new PublicKey(inputToken.address),
-          new PublicKey(outputToken.address),
-          inputAmountInSmallestUnits, // raw input amount of tokens
-          slippage,
-          true
-        ))
+        ? await jupiter.computeRoutes(
+            new PublicKey(inputToken.address),
+            new PublicKey(outputToken.address),
+            inputAmountInSmallestUnits, // raw input amount of tokens
+            slippage,
+            true
+          )
         : null;
 
     if (routes && routes.routesInfos) {
       console.log("Possible number of routes:", routes.routesInfos.length);
-      console.log("Best quote: ", routes.routesInfos[0].outAmount);
+      console.log(
+        "Best quote: ",
+        routes.routesInfos[0].outAmount / 10 ** outputToken.decimals,
+        `(${outputToken.symbol})`
+      );
       return routes;
     } else {
       return null;
@@ -99,6 +105,7 @@ const executeSwap = async ({
     const { execute } = await jupiter.exchange({
       route,
     });
+
     // Execute swap
     const swapResult: any = await execute(); // Force any to ignore TS misidentifying SwapResult type
 
@@ -136,6 +143,7 @@ const main = async () => {
     // If you know which input/output pair you want
     const inputToken = tokens.find((t) => t.address == INPUT_MINT_ADDRESS); // USDC Mint Info
     const outputToken = tokens.find((t) => t.address == OUTPUT_MINT_ADDRESS); // USDT Mint Info
+
     // Alternatively, find all possible outputToken based on your inputToken
     const possiblePairsTokenInfo = await getPossiblePairsTokenInfo({
       tokens,
