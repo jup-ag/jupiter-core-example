@@ -68,13 +68,13 @@ const getRoutes = async ({
       : 0;
     const routes =
       inputToken && outputToken
-        ? await jupiter.computeRoutes(
-            new PublicKey(inputToken.address),
-            new PublicKey(outputToken.address),
-            inputAmountInSmallestUnits, // raw input amount of tokens
+        ? await jupiter.computeRoutes({
+            inputMint: new PublicKey(inputToken.address),
+            outputMint: new PublicKey(outputToken.address),
+            inputAmount: inputAmountInSmallestUnits, // raw input amount of tokens
             slippage,
-            true
-          )
+            forceFetch: true,
+          })
         : null;
 
     if (routes && routes.routesInfos) {
