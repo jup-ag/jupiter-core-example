@@ -7,12 +7,12 @@ require("dotenv").config();
 // Endpoints, connection
 export const ENV: Cluster = (process.env.CLUSTER as Cluster) || "mainnet-beta";
 
-// Sometimes, your RPC endpoint may reject you if you spam too many RPC calls. Try https://ssc-dao.genesysgo.net for the
-// free RPC services. There are also many paid RPC services.
+// Sometimes, your RPC endpoint may reject you if you spam too many RPC calls. Sometimes, your PRC server
+// may have invalid cache and cause problems.
 export const SOLANA_RPC_ENDPOINT =
   ENV === "devnet"
     ? "https://api.devnet.solana.com"
-    : "https://solana-api.projectserum.com";
+    : "https://ssc-dao.genesysgo.net";
 
 // Wallets
 export const WALLET_PRIVATE_KEY =
