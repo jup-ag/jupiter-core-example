@@ -6,9 +6,10 @@ import {
   ENV,
   INPUT_MINT_ADDRESS,
   OUTPUT_MINT_ADDRESS,
+  USER_KEYPAIR,
   SOLANA_RPC_ENDPOINT,
   Token,
-  USER_KEYPAIR,
+  AMOUNT,
 } from "./constants";
 
 const getPossiblePairsTokenInfo = ({
@@ -69,12 +70,12 @@ const getRoutes = async ({
     const routes =
       inputToken && outputToken
         ? await jupiter.computeRoutes({
-            inputMint: new PublicKey(inputToken.address),
-            outputMint: new PublicKey(outputToken.address),
-            inputAmount: inputAmountInSmallestUnits, // raw input amount of tokens
-            slippage,
-            forceFetch: true,
-          })
+          inputMint: new PublicKey(inputToken.address),
+          outputMint: new PublicKey(outputToken.address),
+          inputAmount: inputAmountInSmallestUnits, // raw input amount of tokens
+          slippage,
+          forceFetch: true,
+        })
         : null;
 
     if (routes && routes.routesInfos) {
@@ -142,7 +143,7 @@ const main = async () => {
 
     // If you know which input/output pair you want
     const inputToken = tokens.find((t) => t.address == INPUT_MINT_ADDRESS); // USDC Mint Info
-    const outputToken = tokens.find((t) => t.address == OUTPUT_MINT_ADDRESS); // USDT Mint Info
+    const outputToken = tokens.find((t) => t.address == OUTPUT_MINT_ADDRESS); // USDC Mint Info
 
     // Alternatively, find all possible outputToken based on your inputToken
     const possiblePairsTokenInfo = await getPossiblePairsTokenInfo({
@@ -155,12 +156,26 @@ const main = async () => {
       jupiter,
       inputToken,
       outputToken,
-      inputAmount: 1, // 1 unit in UI
-      slippage: 1, // 1% slippage
+      inputAmount: AMOUNT, // 1 unit in UI
+      slippage: .1, // .1% slippage
     });
 
+    const bestRoute = routes!.routesInfos[0];
+    const profit = bestRoute.outAmountWithSlippage - bestRoute.inAmount;
+    const fee = 500; // Tx fee in USDC = ~.000005 SOL
+    console.log(bestRoute);
+    console.log(`Pre tx profit: ${profit}`)
+
+    // Percentage
+    // Routes that are too good to be true usually are
+    const percentage = profit / bestRoute.inAmount * 100;
+
     // Routes are sorted based on outputAmount, so ideally the first route is the best.
-    // await executeSwap({ jupiter, route: routes!.routesInfos[0] });
+    if (profit > fee && percentage <= 10) {
+      console.log(`Making trade for ${percentage}% profit`)
+      await executeSwap({ jupiter, route: routes!.routesInfos[0] });
+    }
+    main();
   } catch (error) {
     console.log({ error });
   }
