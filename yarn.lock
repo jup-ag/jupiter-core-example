@@ -42,22 +42,21 @@
     "@ethersproject/logger" "^5.5.0"
     hash.js "1.1.7"
 
-"@jup-ag/core@^1.0.0-beta.16":
-  version "1.0.0-beta.16"
-  resolved "https://registry.yarnpkg.com/@jup-ag/core/-/core-1.0.0-beta.16.tgz#76e0f9a4adbe261675ab99a438dac43f20ab28ec"
-  integrity sha512-y9eFxDdIOjroTAorkP/6QOP6NLguVdNHaZbanKfvhsvxNr0HPGW6d5fgrdOyw1tjDQFponIhhGmliF9u/ghXzw==
+"@jup-ag/core@^1.0.0-beta.18":
+  version "1.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@jup-ag/core/-/core-1.0.0-beta.18.tgz#685084614bd69c82165a28275a953e7015a8469e"
+  integrity sha512-SfeE/w1M+MUsKsVJ+d2rZA3lC7YiMgpxRn4mnYU2Ub1iS2WMjbfP0RFvRIbaoKPeAppY5AKYd4WymBMijTP79Q==
   dependencies:
-    "@jup-ag/crema-sdk" "~1.1.7"
-    "@jup-ag/lifinity-sdk" "~0.1.14"
-    "@jup-ag/math" "1.0.0-beta.16"
+    "@jup-ag/crema-sdk" "~1.1.10"
+    "@jup-ag/lifinity-sdk" "~0.1.16"
+    "@jup-ag/math" "1.0.0-beta.18"
     "@mercurial-finance/optimist" "~0.1.0"
     "@project-serum/anchor" "~0.20.1"
     "@project-serum/serum" "~0.13.61"
     "@saberhq/stableswap-sdk" "~1.12.6"
     "@saberhq/token-utils" "~1.12.6"
     "@solana/spl-token" "~0.1.8"
-    "@solana/web3.js" "~1.31.0"
-    bignumber.js "~9.0.2"
+    "@solana/web3.js" "1.31.0"
     bn.js "~5.2.0"
     cross-fetch "3.1.4"
     decimal.js "~10.3.1"
@@ -65,20 +64,20 @@
     promise-retry "~2.0.1"
     tiny-invariant "~1.2.0"
 
-"@jup-ag/crema-sdk@~1.1.7":
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/@jup-ag/crema-sdk/-/crema-sdk-1.1.8.tgz#c6b29ac548bbd8d5250d75fbb4d84e9bcff4d14d"
-  integrity sha512-oKKLnpPpYECQT9T4wuM53NbqZrUIR35kovAdDG/TCR68ylbHTZ2naPqtB6gdjhlZ5BqzsSe8CdtZTxeHPeyTew==
+"@jup-ag/crema-sdk@~1.1.10":
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/@jup-ag/crema-sdk/-/crema-sdk-1.1.10.tgz#afb6bd12c5c408a7551d63b081a4882e1efcd9ae"
+  integrity sha512-td60DS9nJoVetnMm7IM3UnTo6y5Q73HquoBedI1Sd1st8AEjg+GK2JK01NXtjWNyqfuxPdKTijMyTzNhB3t1PA==
   dependencies:
     "@solana/buffer-layout" "^4.0.0"
     "@solana/spl-token" "^0.1.8"
     decimal.js "^10.3.1"
     tiny-invariant "^1.2.0"
 
-"@jup-ag/lifinity-sdk@~0.1.14":
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/@jup-ag/lifinity-sdk/-/lifinity-sdk-0.1.14.tgz#3df780ec838e765401fac2849f5e8856e98fbbdc"
-  integrity sha512-p3xNQhQ/yrNL7vyZTBeSBaaXradooyRLRSAYEx2MGS1HQOnwPdeiBquWs6MY93vJ8zFrS4IXBuCnBqvKc+QFgQ==
+"@jup-ag/lifinity-sdk@~0.1.16":
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/@jup-ag/lifinity-sdk/-/lifinity-sdk-0.1.16.tgz#23dc0024451266b8e8f84187a98ce3fe9211278b"
+  integrity sha512-YvumyAhrKriBGyanKUfWpGUMM1jz7CWGq6EJTyl3huWmyYAU3aXOZ731bn1kz4T/cdm8QKr2vnCR9jEgM3m2Xw==
   dependencies:
     "@project-serum/anchor" "^0.20.1"
     "@project-serum/borsh" "^0.2.5"
@@ -86,15 +85,15 @@
     "@pythnetwork/client" "^2.5.1"
     "@solana/spl-token" "^0.1.8"
     "@solana/web3.js" "1.31.0"
-    bignumber.js "^9.0.2"
+    decimal.js "^10.3.1"
 
-"@jup-ag/math@1.0.0-beta.16":
-  version "1.0.0-beta.16"
-  resolved "https://registry.yarnpkg.com/@jup-ag/math/-/math-1.0.0-beta.16.tgz#7f38be4bd105edf898b3784c99cb3e49eb1391b1"
-  integrity sha512-eYE2gYmRQH02VLOUFw+1AjgievHOgM+AaqhUDS5i5XbRIsLM5igKrS0eenGzMoGYsn0DNTJLbG2skQ1G3MeK0A==
+"@jup-ag/math@1.0.0-beta.18":
+  version "1.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@jup-ag/math/-/math-1.0.0-beta.18.tgz#358f14d9a484200ce2b726afdaace620faecbdd5"
+  integrity sha512-K0eSg5x+IxDMQCFpSfUVmQV6jL3WuKQkHibdQKY6JOhp7DsiYJJ1QU+GBNweeqJuksHWdPauyY8FxQ4w4TTucQ==
   dependencies:
     "@solana/spl-token-registry" "~0.2.1105"
-    "@solana/web3.js" "~1.31.0"
+    "@solana/web3.js" "1.31.0"
     builder-pattern "~1.3.0"
     decimal.js "~10.3.1"
     jsbi "~4.1.0"
@@ -461,11 +460,6 @@ big.js@^6.1.1:
   version "6.1.1"
   resolved "https://registry.npmjs.org/big.js/-/big.js-6.1.1.tgz"
   integrity sha512-1vObw81a8ylZO5ePrtMay0n018TcftpTA5HFKDaSuiUDBo8biRBtjIobw60OpwuvrGk+FsxKamqN4cnmj/eXdg==
-
-bignumber.js@^9.0.2, bignumber.js@~9.0.2:
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.2.tgz#71c6c6bed38de64e24a65ebe16cfcf23ae693673"
-  integrity sha512-GAcQvbpsM0pUb0zw1EI0KhQEZ+lRwR5fYaAp3vPOYuP7aDvGy6cVN6XHLauvF8SOga2y0dcLcjt3iQDTSEliyw==
 
 bn.js@^4.11.9:
   version "4.12.0"

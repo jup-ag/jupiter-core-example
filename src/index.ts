@@ -1,7 +1,12 @@
 import { Connection, PublicKey } from "@solana/web3.js";
 import fetch from "isomorphic-fetch";
 
-import { Jupiter, RouteInfo, TOKEN_LIST_URL } from "@jup-ag/core";
+import {
+  getPlatformFeeAccounts,
+  Jupiter,
+  RouteInfo,
+  TOKEN_LIST_URL,
+} from "@jup-ag/core";
 import {
   ENV,
   INPUT_MINT_ADDRESS,
@@ -95,15 +100,15 @@ const getRoutes = async ({
 
 const executeSwap = async ({
   jupiter,
-  route,
+  routeInfo,
 }: {
   jupiter: Jupiter;
-  route: RouteInfo;
+  routeInfo: RouteInfo;
 }) => {
   try {
     // Prepare execute exchange
     const { execute } = await jupiter.exchange({
-      route,
+      routeInfo,
     });
 
     // Execute swap
@@ -130,11 +135,21 @@ const main = async () => {
     const connection = new Connection(SOLANA_RPC_ENDPOINT); // Setup Solana RPC connection
     const tokens: Token[] = await (await fetch(TOKEN_LIST_URL[ENV])).json(); // Fetch token list from Jupiter API
 
+    // If you want to add platformFee as integrator: https://docs.jup.ag/jupiter-core/adding-platform-fees
+    const platformFeeAndAccounts = {
+      feeBps: 50,
+      feeAccounts: await getPlatformFeeAccounts(
+        connection,
+        new PublicKey("9VjEE6cne5rNzrV9UPPZupab57bDGx3R9ZDG9QYMNAht") // The platform fee account owner
+      ),
+    };
+
     //  Load Jupiter
     const jupiter = await Jupiter.load({
       connection,
       cluster: ENV,
       user: USER_KEYPAIR, // or public key
+      platformFeeAndAccounts,
     });
 
     //  Get routeMap, which maps each tokenMint and their respective tokenMints that are swappable
@@ -160,7 +175,7 @@ const main = async () => {
     });
 
     // Routes are sorted based on outputAmount, so ideally the first route is the best.
-    // await executeSwap({ jupiter, route: routes!.routesInfos[0] });
+    // await executeSwap({ jupiter, routeInfo: routes!.routesInfos[0] });
   } catch (error) {
     console.log({ error });
   }
