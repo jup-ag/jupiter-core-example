@@ -126,6 +126,7 @@ const executeSwap = async ({
   }
 };
 
+
 const main = async () => {
   try {
     const connection = new Connection(SOLANA_RPC_ENDPOINT); // Setup Solana RPC connection
@@ -152,6 +153,9 @@ const main = async () => {
       inputToken,
     });
 
+    console.log(possiblePairsTokenInfo)
+
+    /*
     const routes = await getRoutes({
       jupiter,
       inputToken,
@@ -176,6 +180,7 @@ const main = async () => {
       await executeSwap({ jupiter, route: routes!.routesInfos[0] });
     }
     main();
+    */
   } catch (error) {
     console.log({ error });
   }
