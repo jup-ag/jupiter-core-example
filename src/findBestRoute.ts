@@ -15,8 +15,7 @@ import {
 // The GenesysGo RPC endpoint is currently free to use now.
 // They may charge in the future. It is recommended that
 // you are using your own RPC endpoint.
-const connection = new Connection('https://ssc-dao.genesysgo.net');
-const tokens: Token[] = await (await fetch(TOKEN_LIST_URL[ENV])).json(); // Fetch token list from Jupiter API
+const connection = new Connection(SOLANA_RPC_ENDPOINT);
 
 const getRoutes = async ({
     jupiter,
@@ -24,64 +23,61 @@ const getRoutes = async ({
     outputToken,
     inputAmount,
     slippage,
-}: {
+  }: {
     jupiter: Jupiter;
     inputToken?: Token;
     outputToken?: Token;
     inputAmount: number;
     slippage: number;
-}) => {
+  }) => {
     try {
-        if (!inputToken || !outputToken) {
-            return null;
-        }
-
+      if (!inputToken || !outputToken) {
+        return null;
+      }
+  
+      console.log(
+        `Getting routes for ${inputAmount} ${inputToken.symbol} -> ${outputToken.symbol}...`
+      );
+      const inputAmountInSmallestUnits = inputToken
+        ? Math.round(inputAmount * 10 ** inputToken.decimals)
+        : 0;
+      const routes =
+        inputToken && outputToken
+          ? await jupiter.computeRoutes({
+              inputMint: new PublicKey(inputToken.address),
+              outputMint: new PublicKey(outputToken.address),
+              inputAmount: inputAmountInSmallestUnits, // raw input amount of tokens
+              slippage,
+              forceFetch: true,
+            })
+          : null;
+  
+      if (routes && routes.routesInfos) {
+        console.log("Possible number of routes:", routes.routesInfos.length);
         console.log(
-            `Getting routes for ${inputAmount} ${inputToken.symbol} -> ${outputToken.symbol}...`
+          "Best quote: ",
+          routes.routesInfos[0].outAmount / 10 ** outputToken.decimals,
+          `(${outputToken.symbol})`
         );
-        const inputAmountInSmallestUnits = inputToken
-            ? Math.round(inputAmount * 10 ** inputToken.decimals)
-            : 0;
-        const routes =
-            inputToken && outputToken
-                ? await jupiter.computeRoutes({
-                    inputMint: new PublicKey(inputToken.address),
-                    outputMint: new PublicKey(outputToken.address),
-                    inputAmount: inputAmountInSmallestUnits, // raw input amount of tokens
-                    slippage,
-                    forceFetch: true,
-                })
-                : null;
-
-        if (routes && routes.routesInfos) {
-            console.log("Possible number of routes:", routes.routesInfos.length);
-            console.log(
-                "Best quote: ",
-                routes.routesInfos[0].outAmount / 10 ** outputToken.decimals,
-                `(${outputToken.symbol})`
-            );
-            return routes;
-        } else {
-            return null;
-        }
+        return routes;
+      } else {
+        return null;
+      }
     } catch (error) {
-        throw error;
+      throw error;
     }
-};
+  }
 
-const findBestRoute = async (inToken: Token | undefined) => {
-    const routeMap = await (await fetch('https://quote-api.jup.ag/v1/route-map')).json()
+export const findBestRoute = async (inToken: Token | undefined) => {
     //  Load Jupiter
     const jupiter = await Jupiter.load({
         connection,
         cluster: ENV,
         user: USER_KEYPAIR, // or public key
     });
+    const routeMap = jupiter.getRouteMap();
+    const tokens: Token[] = await (await fetch(TOKEN_LIST_URL[ENV])).json(); // Fetch token list from Jupiter API
 
-
-    // list all possible input tokens by mint Address
-    const allInputMints = Object.keys(routeMap)
-    const swappableOutputForToken = routeMap[inToken!.address]
 
     // One route (optimal route provided by jupiter)
     const routes = await getRoutes({
@@ -93,14 +89,19 @@ const findBestRoute = async (inToken: Token | undefined) => {
     });
 
     const bestRoute = routes!.routesInfos[0];
-    const fee = 500; // Tx fee in USDC = ~.000005 SOL
-    const profit = bestRoute.outAmountWithSlippage - bestRoute.inAmount;
+    const oneLegProfit = bestRoute.outAmountWithSlippage - bestRoute.inAmount;
 
     // Calculate best routes to all other pairs that can be swapped for token
 
-    let twoRouteLegs = new Map<string, number>();
+    interface multiRouteInfo {
+        profit: number;
+        routes: RouteInfo[];
+    }
+
+    let maxProfitMultiRoute: multiRouteInfo | undefined;
+
     for (const token in tokens) {
-        if (inToken!.address in routeMap[token]) {
+        if (inToken!.address in (routeMap.get(token) || {})) {
             const outputToken = tokens.find((f) => f.address === token);
 
             const inRoute = await getRoutes({
@@ -124,11 +125,24 @@ const findBestRoute = async (inToken: Token | undefined) => {
             const bestOutRoute = outRoute!.routesInfos[0];
 
             const profit = bestOutRoute.outAmountWithSlippage - bestInRoute.inAmount;
-
-            twoRouteLegs.set(token, profit);
+            
+            if (maxProfitMultiRoute == undefined || profit > maxProfitMultiRoute.profit) {
+                maxProfitMultiRoute = {
+                    profit: profit,
+                    routes: [bestInRoute, bestOutRoute]
+                }
+            }
+            
         }
     }
 
-    const maxLegProfit = twoRouteLegs.values;
+    let bestRouteInfo = maxProfitMultiRoute;
+    if (maxProfitMultiRoute == undefined || maxProfitMultiRoute?.profit < oneLegProfit) {
+        bestRouteInfo = {
+            profit: oneLegProfit,
+            routes: [bestRoute]
+        }
+    }
 
+    return bestRouteInfo;
 }

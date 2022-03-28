@@ -11,6 +11,9 @@ import {
   Token,
   AMOUNT,
 } from "./constants";
+import {
+  findBestRoute
+} from "./findBestRoute";
 
 const getPossiblePairsTokenInfo = ({
   tokens,
@@ -38,57 +41,6 @@ const getPossiblePairsTokenInfo = ({
     // Perform your conditionals here to use other outputToken
     // const alternativeOutputToken = possiblePairsTokenInfo[USDT_MINT_ADDRESS]
     return possiblePairsTokenInfo;
-  } catch (error) {
-    throw error;
-  }
-};
-
-const getRoutes = async ({
-  jupiter,
-  inputToken,
-  outputToken,
-  inputAmount,
-  slippage,
-}: {
-  jupiter: Jupiter;
-  inputToken?: Token;
-  outputToken?: Token;
-  inputAmount: number;
-  slippage: number;
-}) => {
-  try {
-    if (!inputToken || !outputToken) {
-      return null;
-    }
-
-    console.log(
-      `Getting routes for ${inputAmount} ${inputToken.symbol} -> ${outputToken.symbol}...`
-    );
-    const inputAmountInSmallestUnits = inputToken
-      ? Math.round(inputAmount * 10 ** inputToken.decimals)
-      : 0;
-    const routes =
-      inputToken && outputToken
-        ? await jupiter.computeRoutes({
-          inputMint: new PublicKey(inputToken.address),
-          outputMint: new PublicKey(outputToken.address),
-          inputAmount: inputAmountInSmallestUnits, // raw input amount of tokens
-          slippage,
-          forceFetch: true,
-        })
-        : null;
-
-    if (routes && routes.routesInfos) {
-      console.log("Possible number of routes:", routes.routesInfos.length);
-      console.log(
-        "Best quote: ",
-        routes.routesInfos[0].outAmount / 10 ** outputToken.decimals,
-        `(${outputToken.symbol})`
-      );
-      return routes;
-    } else {
-      return null;
-    }
   } catch (error) {
     throw error;
   }
@@ -139,13 +91,14 @@ const main = async () => {
       user: USER_KEYPAIR, // or public key
     });
 
-    //  Get routeMap, which maps each tokenMint and their respective tokenMints that are swappable
-    const routeMap = jupiter.getRouteMap();
 
     // If you know which input/output pair you want
     const inputToken = tokens.find((t) => t.address == INPUT_MINT_ADDRESS); // USDC Mint Info
-    const outputToken = tokens.find((t) => t.address == OUTPUT_MINT_ADDRESS); // USDC Mint Info
 
+    const maxProfitRoute = await findBestRoute(inputToken);
+    console.log(`Found ${maxProfitRoute?.routes.length} leg route with max profit ${maxProfitRoute?.profit} going through routes:\
+     ${JSON.stringify(maxProfitRoute?.routes)}.`)
+    /*
     // Alternatively, find all possible outputToken based on your inputToken
     const possiblePairsTokenInfo = await getPossiblePairsTokenInfo({
       tokens,
@@ -155,7 +108,7 @@ const main = async () => {
 
     console.log(possiblePairsTokenInfo)
 
-    /*
+    
     const routes = await getRoutes({
       jupiter,
       inputToken,
@@ -166,24 +119,24 @@ const main = async () => {
 
     const bestRoute = routes!.routesInfos[0];
     const profit = bestRoute.outAmountWithSlippage - bestRoute.inAmount;
+    */
     const fee = 500; // Tx fee in USDC = ~.000005 SOL
+    /*
     console.log(bestRoute);
     console.log(`Pre tx profit: ${profit}`)
 
     // Percentage
     // Routes that are too good to be true usually are
     const percentage = profit / bestRoute.inAmount * 100;
-
-    // Routes are sorted based on outputAmount, so ideally the first route is the best.
-    if (profit > fee && percentage <= 10) {
-      console.log(`Making trade for ${percentage}% profit`)
-      await executeSwap({ jupiter, route: routes!.routesInfos[0] });
+    */
+    if (maxProfitRoute != undefined && maxProfitRoute?.profit > fee) {
+      console.log(`Making trade`)
+      for (let route of maxProfitRoute.routes) {
+        await executeSwap({ jupiter, route: route });
+      }
     }
     main();
-    */
   } catch (error) {
     console.log({ error });
   }
 };
-
-main();
