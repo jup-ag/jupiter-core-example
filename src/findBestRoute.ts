@@ -23,50 +23,50 @@ const getRoutes = async ({
     outputToken,
     inputAmount,
     slippage,
-  }: {
+}: {
     jupiter: Jupiter;
     inputToken?: Token;
     outputToken?: Token;
     inputAmount: number;
     slippage: number;
-  }) => {
+}) => {
     try {
-      if (!inputToken || !outputToken) {
-        return null;
-      }
-  
-      console.log(
-        `Getting routes for ${inputAmount} ${inputToken.symbol} -> ${outputToken.symbol}...`
-      );
-      const inputAmountInSmallestUnits = inputToken
-        ? Math.round(inputAmount * 10 ** inputToken.decimals)
-        : 0;
-      const routes =
-        inputToken && outputToken
-          ? await jupiter.computeRoutes({
-              inputMint: new PublicKey(inputToken.address),
-              outputMint: new PublicKey(outputToken.address),
-              inputAmount: inputAmountInSmallestUnits, // raw input amount of tokens
-              slippage,
-              forceFetch: true,
-            })
-          : null;
-  
-      if (routes && routes.routesInfos) {
-        console.log("Possible number of routes:", routes.routesInfos.length);
+        if (!inputToken || !outputToken) {
+            return null;
+        }
+
         console.log(
-          "Best quote: ",
-          routes.routesInfos[0].outAmount / 10 ** outputToken.decimals,
-          `(${outputToken.symbol})`
+            `Getting routes for ${inputAmount} ${inputToken.symbol} -> ${outputToken.symbol}...`
         );
-        return routes;
-      } else {
-        return null;
-      }
+        const inputAmountInSmallestUnits = inputToken
+            ? Math.round(inputAmount * 10 ** inputToken.decimals)
+            : 0;
+        const routes =
+            inputToken && outputToken
+                ? await jupiter.computeRoutes({
+                    inputMint: new PublicKey(inputToken.address),
+                    outputMint: new PublicKey(outputToken.address),
+                    inputAmount: inputAmountInSmallestUnits, // raw input amount of tokens
+                    slippage,
+                    forceFetch: true,
+                })
+                : null;
+
+        if (routes && routes.routesInfos) {
+            console.log("Possible number of routes:", routes.routesInfos.length);
+            console.log(
+                "Best quote: ",
+                routes.routesInfos[0].outAmount / 10 ** outputToken.decimals,
+                `(${outputToken.symbol})`
+            );
+            return routes;
+        } else {
+            return null;
+        }
     } catch (error) {
-      throw error;
+        throw error;
     }
-  }
+}
 
 export const findBestRoute = async (inToken: Token | undefined) => {
     //  Load Jupiter
@@ -100,9 +100,9 @@ export const findBestRoute = async (inToken: Token | undefined) => {
 
     let maxProfitMultiRoute: multiRouteInfo | undefined;
 
-    for (const token in tokens) {
-        if (inToken!.address in (routeMap.get(token) || {})) {
-            const outputToken = tokens.find((f) => f.address === token);
+    for (const token of tokens) {
+        if (new Set((routeMap.get(token.address) || [])).has(inToken!.address)) {
+            const outputToken = tokens.find((f) => f.address === token.address);
 
             const inRoute = await getRoutes({
                 jupiter,
@@ -125,24 +125,27 @@ export const findBestRoute = async (inToken: Token | undefined) => {
             const bestOutRoute = outRoute!.routesInfos[0];
 
             const profit = bestOutRoute.outAmountWithSlippage - bestInRoute.inAmount;
-            
+            console.log(`Found multi route with profit ${profit}`);
+
             if (maxProfitMultiRoute == undefined || profit > maxProfitMultiRoute.profit) {
                 maxProfitMultiRoute = {
                     profit: profit,
                     routes: [bestInRoute, bestOutRoute]
                 }
             }
-            
+
         }
     }
 
     let bestRouteInfo = maxProfitMultiRoute;
+    /*
     if (maxProfitMultiRoute == undefined || maxProfitMultiRoute?.profit < oneLegProfit) {
         bestRouteInfo = {
             profit: oneLegProfit,
             routes: [bestRoute]
         }
     }
+    */
 
     return bestRouteInfo;
 }

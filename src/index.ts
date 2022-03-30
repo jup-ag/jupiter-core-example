@@ -11,6 +11,7 @@ import {
   Token,
   AMOUNT,
 } from "./constants";
+
 import {
   findBestRoute
 } from "./findBestRoute";
@@ -97,7 +98,7 @@ const main = async () => {
 
     const maxProfitRoute = await findBestRoute(inputToken);
     console.log(`Found ${maxProfitRoute?.routes.length} leg route with max profit ${maxProfitRoute?.profit} going through routes:\
-     ${JSON.stringify(maxProfitRoute?.routes)}.`)
+     ${JSON.stringify(maxProfitRoute?.routes)}.`);
     /*
     // Alternatively, find all possible outputToken based on your inputToken
     const possiblePairsTokenInfo = await getPossiblePairsTokenInfo({
@@ -130,9 +131,9 @@ const main = async () => {
     const percentage = profit / bestRoute.inAmount * 100;
     */
     if (maxProfitRoute != undefined && maxProfitRoute?.profit > fee) {
-      console.log(`Making trade`)
+      console.log(`Making trade`);
       for (let route of maxProfitRoute.routes) {
-        await executeSwap({ jupiter, route: route });
+        // await executeSwap({ jupiter, route: route });
       }
     }
     main();
@@ -140,3 +141,5 @@ const main = async () => {
     console.log({ error });
   }
 };
+
+main();
