@@ -140,7 +140,7 @@ const main = async () => {
       feeBps: 50,
       feeAccounts: await getPlatformFeeAccounts(
         connection,
-        new PublicKey("9VjEE6cne5rNzrV9UPPZupab57bDGx3R9ZDG9QYMNAht") // The platform fee account owner
+        new PublicKey("BUX7s2ef2htTGb2KKoPHWkmzxPj4nTWMWRgs5CSbQxf9") // The platform fee account owner
       ),
     };
 
