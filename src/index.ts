@@ -1,12 +1,13 @@
 import { Connection, PublicKey } from "@solana/web3.js";
 import fetch from "isomorphic-fetch";
-
+import JSBI from "jsbi";
 import {
   getPlatformFeeAccounts,
   Jupiter,
   RouteInfo,
   TOKEN_LIST_URL,
 } from "@jup-ag/core";
+import Decimal from "decimal.js";
 import {
   ENV,
   INPUT_MINT_ADDRESS,
@@ -71,12 +72,13 @@ const getRoutes = async ({
     const inputAmountInSmallestUnits = inputToken
       ? Math.round(inputAmount * 10 ** inputToken.decimals)
       : 0;
+
     const routes =
       inputToken && outputToken
         ? await jupiter.computeRoutes({
             inputMint: new PublicKey(inputToken.address),
             outputMint: new PublicKey(outputToken.address),
-            inputAmount: inputAmountInSmallestUnits, // raw input amount of tokens
+            amount: JSBI.BigInt(inputAmountInSmallestUnits), // raw input amount of tokens
             slippage,
             forceFetch: true,
           })
@@ -86,7 +88,9 @@ const getRoutes = async ({
       console.log("Possible number of routes:", routes.routesInfos.length);
       console.log(
         "Best quote: ",
-        routes.routesInfos[0].outAmount / 10 ** outputToken.decimals,
+        new Decimal(routes.routesInfos[0].outAmount.toString())
+          .div(10 ** outputToken.decimals)
+          .toString(),
         `(${outputToken.symbol})`
       );
       return routes;
