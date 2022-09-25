@@ -1,12 +1,7 @@
 import { Connection, PublicKey } from "@solana/web3.js";
 import fetch from "isomorphic-fetch";
 import JSBI from "jsbi";
-import {
-  getPlatformFeeAccounts,
-  Jupiter,
-  RouteInfo,
-  TOKEN_LIST_URL,
-} from "@jup-ag/core";
+import { Jupiter, RouteInfo, TOKEN_LIST_URL } from "@jup-ag/core";
 import Decimal from "decimal.js";
 import {
   ENV,
@@ -81,19 +76,24 @@ const getRoutes = async ({
             amount: JSBI.BigInt(inputAmountInSmallestUnits), // raw input amount of tokens
             slippage,
             forceFetch: true,
+            onlyDirectRoutes: true,
           })
         : null;
 
-    if (routes && routes.routesInfos) {
+    const cykuraRoute = routes?.routesInfos.find(
+      (routeInfo) => routeInfo.marketInfos[0].amm.label === "Cykura"
+    );
+
+    if (routes && routes.routesInfos && cykuraRoute) {
       console.log("Possible number of routes:", routes.routesInfos.length);
       console.log(
-        "Best quote: ",
-        new Decimal(routes.routesInfos[0].outAmount.toString())
+        "Cykura quote: ",
+        new Decimal(cykuraRoute.outAmount.toString())
           .div(10 ** outputToken.decimals)
           .toString(),
         `(${outputToken.symbol})`
       );
-      return routes;
+      return cykuraRoute;
     } else {
       return null;
     }
@@ -140,20 +140,19 @@ const main = async () => {
     const tokens: Token[] = await (await fetch(TOKEN_LIST_URL[ENV])).json(); // Fetch token list from Jupiter API
 
     // If you want to add platformFee as integrator: https://docs.jup.ag/jupiter-core/adding-platform-fees
-    const platformFeeAndAccounts = {
-      feeBps: 50,
-      feeAccounts: await getPlatformFeeAccounts(
-        connection,
-        new PublicKey("BUX7s2ef2htTGb2KKoPHWkmzxPj4nTWMWRgs5CSbQxf9") // The platform fee account owner
-      ),
-    };
+    // const platformFeeAndAccounts = {
+    //   feeBps: 50,
+    //   feeAccounts: await getPlatformFeeAccounts(
+    //     connection,
+    //     new PublicKey("BUX7s2ef2htTGb2KKoPHWkmzxPj4nTWMWRgs5CSbQxf9") // The platform fee account owner
+    //   ),
+    // };
 
     //  Load Jupiter
     const jupiter = await Jupiter.load({
       connection,
       cluster: ENV,
       user: USER_KEYPAIR, // or public key
-      platformFeeAndAccounts,
     });
 
     //  Get routeMap, which maps each tokenMint and their respective tokenMints that are swappable
@@ -170,7 +169,7 @@ const main = async () => {
       inputToken,
     });
 
-    const routes = await getRoutes({
+    const cykuraRoute = await getRoutes({
       jupiter,
       inputToken,
       outputToken,
@@ -179,7 +178,7 @@ const main = async () => {
     });
 
     // Routes are sorted based on outputAmount, so ideally the first route is the best.
-    // await executeSwap({ jupiter, routeInfo: routes!.routesInfos[0] });
+    await executeSwap({ jupiter, routeInfo: cykuraRoute! });
   } catch (error) {
     console.log({ error });
   }

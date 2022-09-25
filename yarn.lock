@@ -73,18 +73,18 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@jup-ag/core@^2.0.0-beta.0":
-  version "2.0.0-beta.0"
-  resolved "https://registry.npmjs.org/@jup-ag/core/-/core-2.0.0-beta.0.tgz"
-  integrity sha512-A3GpH5AA5NTToNjmj39WacxXeuHIs9hmRx1nXsGxlDQ0PUqGJx2tcQiGNCN1PSe0JEzp+oRXjTCe2HhxV2os3w==
+"@jup-ag/core@^2.0.0-beta.4":
+  version "2.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@jup-ag/core/-/core-2.0.0-beta.4.tgz#d6944335730dc5afd415336f2cd01d8b720cc585"
+  integrity sha512-tUdFV+kCav/khrHnUwEglEYEhUxRBF72IQuQ5jRqRSwqkFsw5uAFzTtPRk0fon+6hn/DUh5P7CV3PA/79cmjxQ==
   dependencies:
     "@jup-ag/crema-sdk" "2.0.7"
     "@jup-ag/cykura-sdk" "0.1.25"
     "@jup-ag/cykura-sdk-core" "0.1.8"
     "@jup-ag/lifinity-sdk" "0.1.72"
-    "@jup-ag/math" "2.0.0-beta.0"
+    "@jup-ag/math" "2.0.0-beta.4"
     "@jup-ag/whirlpool-sdk" "0.1.1"
-    "@mercurial-finance/optimist" "0.1.5"
+    "@mercurial-finance/optimist" "0.1.6"
     "@project-serum/anchor" "0.24.2"
     "@project-serum/serum" "0.13.65"
     "@saberhq/stableswap-sdk" "1.13.6"
@@ -92,6 +92,7 @@
     bn.js "5.2.1"
     cross-fetch "3.1.5"
     decimal.js "10.3.1"
+    js-sha256 "~0.9.0"
     jsbi "4.3.0"
     promise-retry "2.0.1"
 
@@ -135,10 +136,10 @@
     "@solana/web3.js" "1.31.0"
     decimal.js "^10.3.1"
 
-"@jup-ag/math@2.0.0-beta.0":
-  version "2.0.0-beta.0"
-  resolved "https://registry.npmjs.org/@jup-ag/math/-/math-2.0.0-beta.0.tgz"
-  integrity sha512-7hPao9SiYkJT2buNQtPidcc+luk7FAumwFCbxAh6trTrLDnqXMwetwZu5pCGet3jWUdcABUjvRmBJXl3dFAXMg==
+"@jup-ag/math@2.0.0-beta.4":
+  version "2.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@jup-ag/math/-/math-2.0.0-beta.4.tgz#23b0a763a02511f82203e4853a1bdaf2b8113c1e"
+  integrity sha512-4A7PreQrwwIYJmR0V+lkwc+Lv7IEFFdGz5/pbav0vak/+D+lVa9pnL6vK8SI9knuTBXR6qNEf/jPatT7KsRslA==
   dependencies:
     decimal.js "10.3.1"
     jsbi "4.3.0"
@@ -156,10 +157,27 @@
     decimal.js "~10.3.1"
     tiny-invariant "~1.2.0"
 
-"@mercurial-finance/optimist@0.1.5":
-  version "0.1.5"
-  resolved "https://registry.npmjs.org/@mercurial-finance/optimist/-/optimist-0.1.5.tgz"
-  integrity sha512-88FL1r/uakc1wCTL2vkSqFzsCOpAqvv6kmw++xiPNx59FFIR6NQrbfwTE0HNOszUXy6/C9nINywzUkFcyjn5hQ==
+"@mercurial-finance/optimist@0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@mercurial-finance/optimist/-/optimist-0.1.6.tgz#c91795ba86d889111743160a81996c6a89b2fa6f"
+  integrity sha512-zZ00GxDQIyHO+1DlZJ3W+ZWHzPPTJ4v2JOpoguUsK7k4PlYBcKm9hThEom5RyNVK+rSMlj5vX+xqLz7+bDc2tA==
+  dependencies:
+    promise-retry "2.0.1"
+
+"@noble/ed25519@^1.7.0":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@noble/ed25519/-/ed25519-1.7.1.tgz#6899660f6fbb97798a6fbd227227c4589a454724"
+  integrity sha512-Rk4SkJFaXZiznFyC/t77Q0NKS4FL7TLJJsVG2V2oiEq3kJVeTdxysEe/yRWSpnWMe808XRDJ+VFh5pt/FN5plw==
+
+"@noble/hashes@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.1.2.tgz#e9e035b9b166ca0af657a7848eb2718f0f22f183"
+  integrity sha512-KYRCASVTv6aeUi1tsF8/vpyR7zpfs3FUzy2Jqm+MU+LmUKhQ0y2FpfwqkCcxSg2ua4GALJd8k2R76WxwZGbQpA==
+
+"@noble/secp256k1@^1.6.3":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@noble/secp256k1/-/secp256k1-1.7.0.tgz#d15357f7c227e751d90aa06b05a0e5cf993ba8c1"
+  integrity sha512-kbacwGSsH/CTout0ZnZWxnW1B+jH/7r/WAAKLBtrRJ/+CUH7lgmQzl3GTrQua3SGKWNSDsS6lmjnDpIJ5Dxyaw==
 
 "@orca-so/whirlpool-client-sdk@npm:@jup-ag/whirlpool-client-sdk@0.0.8":
   version "0.0.8"
@@ -491,13 +509,15 @@
     superstruct "^0.14.2"
     tweetnacl "^1.0.0"
 
-"@solana/web3.js@^1.47.3":
-  version "1.47.3"
-  resolved "https://registry.npmjs.org/@solana/web3.js/-/web3.js-1.47.3.tgz"
-  integrity sha512-TQJulaN/+b0xXq5EhQAYFwVyOORxSyVJn1EiXupClZm8DY7f9EeUG6vl0FzSAgwEAwXKsgK3sVs/3px2e7H7dQ==
+"@solana/web3.js@^1.59.1":
+  version "1.63.1"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.63.1.tgz#88a19a17f5f4aada73ad70a94044c1067cab2b4d"
+  integrity sha512-wgEdGVK5FTS2zENxbcGSvKpGZ0jDS6BUdGu8Gn6ns0CzgJkK83u4ip3THSnBPEQ5i/jrqukg998BwV1H67+qiQ==
   dependencies:
     "@babel/runtime" "^7.12.5"
-    "@ethersproject/sha2" "^5.5.0"
+    "@noble/ed25519" "^1.7.0"
+    "@noble/hashes" "^1.1.2"
+    "@noble/secp256k1" "^1.6.3"
     "@solana/buffer-layout" "^4.0.0"
     bigint-buffer "^1.1.5"
     bn.js "^5.0.0"
@@ -506,12 +526,9 @@
     buffer "6.0.1"
     fast-stable-stringify "^1.0.0"
     jayson "^3.4.4"
-    js-sha3 "^0.8.0"
     node-fetch "2"
     rpc-websockets "^7.5.0"
-    secp256k1 "^4.0.2"
     superstruct "^0.14.2"
-    tweetnacl "^1.0.0"
 
 "@tsconfig/node10@^1.0.7":
   version "1.0.8"
@@ -895,14 +912,9 @@ decimal.js-light@^2.5.1:
   resolved "https://registry.npmjs.org/decimal.js-light/-/decimal.js-light-2.5.1.tgz"
   integrity sha512-qIMFpTMZmny+MMIitAB6D7iVPEorVw6YQRWkvarTkT4tBeSLLiHzcwj6q0MmYSFCiVpiqPJTJEYIrpcPzVEIvg==
 
-decimal.js@10.3.1, decimal.js@~10.3.1:
+decimal.js@10.3.1, decimal.js@^10.3.1, decimal.js@~10.3.1:
   version "10.3.1"
   resolved "https://registry.npmjs.org/decimal.js/-/decimal.js-10.3.1.tgz"
-  integrity sha512-V0pfhfr8suzyPGOx3nmq4aHqabehUZn6Ch9kyFpV79TGDTWFmHqUqXdabR7QHqxzrYolF4+tVmJhUG4OURg5dQ==
-
-decimal.js@^10.3.1:
-  version "10.3.1"
-  resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.3.1.tgz#d8c3a444a9c6774ba60ca6ad7261c3a94fd5e783"
   integrity sha512-V0pfhfr8suzyPGOx3nmq4aHqabehUZn6Ch9kyFpV79TGDTWFmHqUqXdabR7QHqxzrYolF4+tVmJhUG4OURg5dQ==
 
 define-properties@^1.1.3:
@@ -1353,7 +1365,7 @@ joi@^17.4.0:
     "@sideway/formula" "^3.0.0"
     "@sideway/pinpoint" "^2.0.0"
 
-js-sha256@^0.9.0:
+js-sha256@^0.9.0, js-sha256@~0.9.0:
   version "0.9.0"
   resolved "https://registry.npmjs.org/js-sha256/-/js-sha256-0.9.0.tgz"
   integrity sha512-sga3MHh9sgQN2+pJ9VYZ+1LPwXOxuBJBA5nrR5/ofPfuiJBE2hnjsaN8se8JznOmGLN2p49Pe5U/ttafcs/apA==

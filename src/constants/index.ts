@@ -24,11 +24,11 @@ export const USER_KEYPAIR = Keypair.fromSecretKey(USER_PRIVATE_KEY);
 export const INPUT_MINT_ADDRESS =
   ENV === "devnet"
     ? "So11111111111111111111111111111111111111112" // SOL
-    : "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"; // USDC
+    : "So11111111111111111111111111111111111111112"; // USDC
 export const OUTPUT_MINT_ADDRESS =
   ENV === "devnet"
     ? "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt" // SRM
-    : "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB"; // USDT
+    : "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"; // USDT
 
 // Interface
 export interface Token {
