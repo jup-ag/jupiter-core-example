@@ -53,13 +53,13 @@ const getRoutes = async ({
   inputToken,
   outputToken,
   inputAmount,
-  slippage,
+  slippageBps,
 }: {
   jupiter: Jupiter;
   inputToken?: Token;
   outputToken?: Token;
   inputAmount: number;
-  slippage: number;
+  slippageBps: number;
 }) => {
   try {
     if (!inputToken || !outputToken) {
@@ -79,7 +79,7 @@ const getRoutes = async ({
             inputMint: new PublicKey(inputToken.address),
             outputMint: new PublicKey(outputToken.address),
             amount: JSBI.BigInt(inputAmountInSmallestUnits), // raw input amount of tokens
-            slippage,
+            slippageBps,
             forceFetch: true,
           })
         : null;
@@ -175,7 +175,7 @@ const main = async () => {
       inputToken,
       outputToken,
       inputAmount: 1, // 1 unit in UI
-      slippage: 1, // 1% slippage
+      slippageBps: 100, // 1% slippage
     });
 
     // Routes are sorted based on outputAmount, so ideally the first route is the best.
