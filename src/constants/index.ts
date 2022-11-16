@@ -27,7 +27,7 @@ export const INPUT_MINT_ADDRESS =
     : "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"; // USDC
 export const OUTPUT_MINT_ADDRESS =
   ENV === "devnet"
-    ? "SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt" // SRM
+    ? "MERt85fc5boKw3BW1eYdxonEuJNvXbiMbs6hvheau5K" // MER
     : "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB"; // USDT
 
 // Interface
