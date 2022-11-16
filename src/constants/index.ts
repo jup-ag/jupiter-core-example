@@ -8,7 +8,7 @@ require("dotenv").config();
 export const ENV: Cluster = (process.env.CLUSTER as Cluster) || "mainnet-beta";
 
 // Sometimes, your RPC endpoint may reject you if you spam too many RPC calls. Sometimes, your PRC server
-// may have invalid cache and cause problems.
+// may have invalid cache and cause problems. Also, a paid RPC server is always recommended.
 export const SOLANA_RPC_ENDPOINT =
   ENV === "devnet"
     ? "https://api.devnet.solana.com"
