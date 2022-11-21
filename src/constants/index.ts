@@ -12,8 +12,8 @@ export const ENV: Cluster = (process.env.CLUSTER as Cluster) || "mainnet-beta";
 export const SOLANA_RPC_ENDPOINT =
   ENV === "devnet"
     ? "https://api.devnet.solana.com"
-    : "https://ssc-dao.genesysgo.net";
-
+    : "https://neat-hidden-sanctuary.solana-mainnet.discover.quiknode.pro/2af5315d336f9ae920028bbb90a73b724dc1bbed";
+    // !IMPORTANT:  This example is using a quiknode free plan that is shared and has limits so should not be used for productions.
 // Wallets
 export const WALLET_PRIVATE_KEY =
   process.env.WALLET_PRIVATE_KEY || "PASTE YOUR WALLET PRIVATE KEY";
