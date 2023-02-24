@@ -13,7 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@jup-ag/core": "3.0.0-beta.8",
+    "@coral-xyz/borsh": "^0.26.0",
+    "@jup-ag/core": "^4.0.0-beta.9",
     "@solana/wallet-adapter-base": "^0.7.1",
     "@solana/web3.js": "^1.47.3",
     "@types/bs58": "^4.0.1",
@@ -30,6 +31,6 @@
     "typescript": "^4.5.3"
   },
   "resolutions": {
-    "@solana/buffer-layout": "4.0.0"
+    "@solana/buffer-layout": "^4.0.0"
   }
 }
